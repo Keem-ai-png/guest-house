@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f2e9">
+  <meta name="description" content="Discover KEEM Guesthouse in Kalabule, Ghana. A welcoming place to plan your stay in Ghana.">
+  <title>KEEM Guesthouse | A Home Away From Home in Ghana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="announcement" data-i18n="announcement">Planning a trip to Ghana? We’d love to hear from you.</div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="KEEM Guesthouse home">
+      <span class="brand-mark">K</span>
+      <span class="brand-copy"><strong>KEEM</strong><small>GUESTHOUSE · GHANA</small></span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+    <nav class="main-nav" id="mainNav">
+      <a href="#home" data-i18n="navHome">Home</a>
+      <a href="#about" data-i18n="navAbout">Our story</a>
+      <a href="#stay" data-i18n="navStay">Rooms</a>
+      <a href="#discover" data-i18n="navDiscover">Discover Ghana</a>
+      <a href="#booking" data-i18n="navBook">Booking</a>
+      <a href="#contact" data-i18n="navContact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="language-toggle" id="languageToggle" aria-label="Switch language">DE</button>
+      <button class="theme-toggle" id="themeToggle" aria-label="Switch colour theme"><span id="themeIcon">☾</span></button>
+      <a class="button button-small" href="#booking" data-i18n="navBook">Book & pay</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-view active" data-page="home">
+    <section class="hero" id="home">
+      <div class="hero-image" role="img" aria-label="Tropical guesthouse courtyard"></div>
+      <div class="hero-shade"></div>
+      <div class="hero-content reveal">
+        <p class="eyebrow light" data-i18n="heroEyebrow">WELCOME TO GHANA</p>
+        <h1 data-i18n="heroTitle">Feel at home.<br><em>Experience Ghana.</em></h1>
+        <p class="hero-lead" data-i18n="heroText">A warm welcome awaits at KEEM Guesthouse. Make our place your starting point for discovering Ghana.</p>
+        <div class="hero-buttons">
+          <a class="button" href="#booking" data-i18n="heroButton">Plan your stay <span>↗</span></a>
+          <a class="text-link light-link" href="#about" data-i18n="heroExplore">Get to know us ↓</a>
+        </div>
+      </div>
+      <div class="hero-note"><span class="note-dot"></span><span data-i18n="heroNote">KALABULE, GHANA</span></div>
+    </section>
+
+    </div>
+    <div class="page-view" data-page="about">
+    <section class="welcome section-wrap" id="about">
+      <div class="section-kicker" data-i18n="aboutKicker">A PLACE TO FEEL WELCOME</div>
+      <div class="welcome-grid">
+        <div><h2 data-i18n="aboutTitle">Your Ghana story<br>starts <em>with a warm welcome.</em></h2></div>
+        <div class="welcome-copy">
+          <p data-i18n="aboutText">KEEM Guesthouse is being created as a comfortable and welcoming base for visitors discovering Ghana. Whether you are travelling from Germany, visiting family, or exploring somewhere new, we look forward to helping you plan your stay.</p>
+          <a class="underlined-link" href="#contact" data-i18n="aboutLink">Let’s talk about your visit <span>↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    </div>
+    <div class="page-view" data-page="stay">
+    <section class="stay-section section-wrap" id="stay">
+      <div class="section-heading">
+        <div><div class="section-kicker" data-i18n="stayKicker">SLOW DOWN & SETTLE IN</div><h2 data-i18n="stayTitle">Make yourself <em>at home.</em></h2></div>
+        <p data-i18n="stayIntro">We’re preparing the details of our accommodation. Contact us to ask about rooms, availability and rates.</p>
+      </div>
+      <div class="rooms-toolbar"><span id="roomCount">Room options</span><span>Choose a room to enquire</span></div>
+      <div class="rooms-grid" id="roomsGrid" aria-live="polite">
+        <p class="rooms-loading">Loading available rooms…</p>
+      </div>
+      <p class="image-disclaimer">Room photographs and facilities should be confirmed by the owner. Prices shown are examples until the owner enters the official rates.</p>
+      <dialog class="room-photo-dialog" id="photoDialog"><button type="button" id="dialogClose" aria-label="Close photo">×</button><img id="dialogImage" alt="Room photograph"><p id="dialogCaption"></p></dialog>
+    </section>
+
+    </div>
+    <div class="page-view" data-page="discover">
+    <section class="experience">
+      <div class="experience-image"></div>
+      <div class="experience-content">
+        <div class="section-kicker light" data-i18n="experienceKicker">MORE THAN A PLACE TO SLEEP</div>
+        <h2 data-i18n="experienceTitle">Come as a guest.<br><em>Leave with stories.</em></h2>
+        <p data-i18n="experienceText">From the colours and flavours of local life to the warmth of Ghanaian hospitality, there is so much to discover. Let us help you start planning.</p>
+        <a class="underlined-link light-link" href="#discover" data-i18n="discoverLink">Explore ideas for your trip <span>↗</span></a>
+      </div>
+    </section>
+
+    <section class="discover-section section-wrap" id="discover">
+      <div class="section-heading">
+        <div><div class="section-kicker" data-i18n="discoverKicker">THE COUNTRY OF WARMTH</div><h2 data-i18n="discoverTitle">Discover <em>Ghana.</em></h2></div>
+        <p data-i18n="discoverIntro">A few ideas to inspire your journey. Travel times and distances depend on your final itinerary and starting point.</p>
+      </div>
+      <div class="discover-grid">
+        <article class="discover-card"><img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=900&q=85" alt="African wildlife landscape"><div><span>01 / NATURE</span><h3>Kakum National Park</h3><p data-i18n="kakumText">Explore rainforest scenery and the famous canopy walkway.</p></div></article>
+        <article class="discover-card"><img src="https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&w=900&q=85" alt="Historic coastal architecture"><div><span>02 / HERITAGE</span><h3>Cape Coast</h3><p data-i18n="capeText">Discover Ghana’s coastal history and heritage.</p></div></article>
+        <article class="discover-card"><img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=900&q=85" alt="Green tropical landscape"><div><span>03 / CULTURE</span><h3 data-i18n="localCulture">Local life & culture</h3><p data-i18n="cultureText">Enjoy local food, markets, music and everyday Ghanaian life.</p></div></article>
+      </div>
+    </section>
+
+    </div>
+    <div class="page-view" data-page="booking">
+    <section class="booking-section" id="booking">
+      <div class="booking-intro">
+        <div class="section-kicker light" data-i18n="bookingKicker">LET’S PLAN SOMETHING GOOD</div>
+        <h2 data-i18n="bookingTitle">Your stay in Ghana<br><em>starts here.</em></h2>
+        <p data-i18n="bookingText">Send us an enquiry and tell us a little about your trip. We’ll get back to you to discuss the details.</p>
+        <div class="contact-mini"><span>✉</span><a href="mailto:hakeemonest@gmail.com">hakeemonest@gmail.com</a></div>
+        <div class="contact-mini"><span>☎</span><a href="tel:+233256849647">+233 25 684 9647</a></div>
+      </div>
+      <form class="booking-form" id="bookingForm">
+        <div class="form-row"><label><span data-i18n="bookNameLabel">Your name</span><input name="name" required maxlength="100" autocomplete="name" placeholder="Full name"></label><label><span data-i18n="bookEmailLabel">Email address</span><input type="email" name="email" required maxlength="200" autocomplete="email" placeholder="you@example.com"></label></div>
+        <label><span data-i18n="bookRoomLabel">Choose a room</span><select name="room_id" id="bookingRoom" required><option value="">Loading available rooms…</option></select></label>
+        <div class="form-row"><label><span data-i18n="bookArrivalLabel">Arrival date</span><input type="date" name="arrival" id="arrivalDate" required></label><label><span data-i18n="bookDepartureLabel">Departure date</span><input type="date" name="departure" id="departureDate" required></label></div>
+        <label><span data-i18n="bookGuestsLabel">Number of guests</span><input type="number" name="guests" min="1" max="30" value="1" required></label>
+        <div class="payment-summary" id="paymentSummary">Select a room and dates to calculate the full amount.</div>
+        <label><span data-i18n="bookMessageLabel">Special requests (optional)</span><textarea name="message" rows="3" maxlength="1000" placeholder="Any questions or requests?"></textarea></label>
+        <button class="button button-light submit-button" type="submit" id="payNowButton"><span data-i18n="payNowLabel">Continue to secure payment</span> <span>↗</span></button>
+        <p class="form-note"><span data-i18n="paymentTerms">Full payment for the entire stay is required at checkout. Payments are processed securely on Paystack. Card, mobile money and bank transfer options depend on your Paystack merchant settings.</span></p>
+        <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    </div>
+    <div class="page-view" data-page="contact">
+    <section class="location-section section-wrap" id="contact">
+      <div><div class="section-kicker" data-i18n="locationKicker">COME FIND US</div><h2 data-i18n="locationTitle">A warm welcome<br><em>in Kalabule.</em></h2><p data-i18n="locationText">KEEM Guesthouse is located in Kalabule, Ghana. The precise Google Maps pin will be added once the owner shares the exact location.</p></div>
+      <div class="map-placeholder"><div class="map-pin">K</div><strong>KEEM GUESTHOUSE</strong><span>KALABULE, GHANA</span><small data-i18n="mapLater">Exact Google Maps location coming soon</small></div>
+    </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <a class="brand footer-brand" href="#home"><span class="brand-mark">K</span><span class="brand-copy"><strong>KEEM</strong><small>GUESTHOUSE · GHANA</small></span></a>
+    <p data-i18n="footerLine">A home away from home in Ghana.</p>
+    <div class="footer-links"><a href="tel:+233256849647">+233 25 684 9647</a><a href="mailto:hakeemonest@gmail.com">Email us</a><a href="https://wa.me/233256849647" target="_blank" rel="noopener">WhatsApp ↗</a></div>
+    <small>© <span id="year"></span> KEEM Guesthouse. <span data-i18n="rights">All rights reserved.</span></small>
+  </footer>
+  <a class="whatsapp-float" href="https://wa.me/233256849647" target="_blank" rel="noopener" aria-label="Chat with KEEM Guesthouse on WhatsApp">✆</a>
+  <script src="script.js"></script>
+  <script type="module" src="booking.js"></script>
+  <script type="module" src="rooms.js"></script>
+</body>
+</html>

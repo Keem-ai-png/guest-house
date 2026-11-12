@@ -1,0 +1,39 @@
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from "./supabase-config.js";
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const $ = (s) => document.querySelector(s);
+const loginPanel=$("#loginPanel"), dashboard=$("#dashboardPanel"), editor=$("#editor");
+let currentPhotos=[];
+function message(text,error=false){const el=$("#status")||$("#loginMessage");el.textContent=text;el.classList.toggle("error",error)}
+function safeText(s=""){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+async function sessionCheck(){const {data:{session}}=await supabase.auth.getSession();showSession(session);}
+function showSession(session){loginPanel.hidden=!!session;dashboard.hidden=!session;if(session){loadRooms();loadBookings();}}
+$("#loginForm").addEventListener("submit",async e=>{e.preventDefault();const f=new FormData(e.currentTarget);$("#loginMessage").textContent="Signing in…";const {data,error}=await supabase.auth.signInWithPassword({email:f.get("email"),password:f.get("password")});if(error){$("#loginMessage").textContent=error.message;return;}showSession(data.session);});
+$("#signOut").addEventListener("click",async()=>{await supabase.auth.signOut();showSession(null);});
+supabase.auth.onAuthStateChange((_event,session)=>showSession(session));
+async function loadRooms(){const {data,error}=await supabase.from("rooms").select("*").order("created_at",{ascending:false});if(error){message(error.message,true);return;}$("#roomList").innerHTML=data.map(r=>`<article class="room-row"><div><h3>${safeText(r.name)}</h3><p>${safeText(r.category)} · €${r.price_eur} / GH₵${r.price_ghs} · ${r.max_guests||'—'} guests · ${safeText(r.bathroom_type||'Bathroom not set')} · ${r.available?"Available":"Unavailable"}</p></div><div class="room-actions"><button data-edit="${r.id}">Edit</button><button class="secondary" data-toggle="${r.id}" data-state="${r.available}">${r.available?"Mark unavailable":"Mark available"}</button><button class="danger" data-delete="${r.id}">Delete</button></div></article>`).join("")||"<p>No rooms yet. Add the first room.</p>";}
+$("#roomList").addEventListener("click",async e=>{const edit=e.target.dataset.edit,toggle=e.target.dataset.toggle,del=e.target.dataset.delete;if(edit){const {data,error}=await supabase.from("rooms").select("*").eq("id",edit).single();if(error)return message(error.message,true);openEditor(data);}if(toggle){const available=e.target.dataset.state!=="true";const {error}=await supabase.from("rooms").update({available}).eq("id",toggle);if(error)message(error.message,true);else{message("Availability updated.");loadRooms();}}if(del&&confirm("Permanently delete this room listing?")){const {error}=await supabase.from("rooms").delete().eq("id",del);if(error)message(error.message,true);else{message("Room deleted.");loadRooms();}}});
+function openEditor(room=null){$("#roomForm").reset();currentPhotos=room?.photos||[];$("#roomForm").elements.id.value=room?.id||"";for(const key of ["name","category","description","price_eur","price_ghs","max_guests","bed_type","bed_count","bathroom_type"])$("#roomForm").elements[key].value=room?.[key]??"";$("#roomForm").elements.features.value=(room?.features||[]).join("\n");$("#roomForm").elements.bathroom_features.value=(room?.bathroom_features||[]).join("\n");$("#roomForm").elements.amenities.value=(room?.amenities||[]).join("\n");$("#roomForm").elements.available.checked=room?.available??true;$("#editorTitle").textContent=room?"Edit room":"Add room";drawPhotos();editor.hidden=false;editor.scrollIntoView({behavior:"smooth"});}
+function drawPhotos(){$("#photoPreview").innerHTML=currentPhotos.map(url=>`<img src="${safeText(url)}" alt="Current room photo">`).join("");}
+$("#newRoom").addEventListener("click",()=>openEditor());$("#cancelEdit").addEventListener("click",()=>editor.hidden=true);
+$("#roomForm").addEventListener("submit",async e=>{e.preventDefault();const button=$("#saveRoom");button.disabled=true;message("Saving room…");try{const f=new FormData(e.currentTarget),id=f.get("id")||crypto.randomUUID(),files=[...$("#roomForm").elements.photos.files];if(files.length+currentPhotos.length>8)throw Error("A room can have a maximum of 8 photos.");for(const file of files){if(!["image/jpeg","image/png","image/webp"].includes(file.type)||file.size>5*1024*1024)throw Error("Use JPEG, PNG or WebP images no larger than 5 MB each.");const ext=file.type==="image/png"?"png":file.type==="image/webp"?"webp":"jpg",path=`${id}/${crypto.randomUUID()}.${ext}`;const {error:uploadError}=await supabase.storage.from("room-photos").upload(path,file,{contentType:file.type,upsert:false});if(uploadError)throw uploadError;const {data}=supabase.storage.from("room-photos").getPublicUrl(path);currentPhotos.push(data.publicUrl);}
+const payload={name:f.get("name").trim(),category:f.get("category").trim(),description:f.get("description").trim(),price_eur:Number(f.get("price_eur")),price_ghs:Number(f.get("price_ghs")),features:f.get("features").split("\n").map(x=>x.trim()).filter(Boolean),max_guests:Number(f.get("max_guests")),bed_type:f.get("bed_type").trim(),bed_count:Number(f.get("bed_count")),bathroom_type:f.get("bathroom_type").trim(),bathroom_features:f.get("bathroom_features").split("\n").map(x=>x.trim()).filter(Boolean),amenities:f.get("amenities").split("\n").map(x=>x.trim()).filter(Boolean),photos:currentPhotos,available:$("#roomForm").elements.available.checked,updated_at:new Date().toISOString()};
+if(!payload.name||!payload.category||!payload.description||!payload.bed_type||!payload.bathroom_type||payload.max_guests<1||payload.bed_count<1||payload.price_eur<0||payload.price_ghs<0||!Number.isFinite(payload.price_eur)||!Number.isFinite(payload.price_ghs))throw Error("Check all required fields and enter valid non-negative prices.");
+const result=f.get("id")?await supabase.from("rooms").update(payload).eq("id",id):await supabase.from("rooms").insert({id,...payload});if(result.error)throw result.error;message("Room saved to the online database.");editor.hidden=true;loadRooms();
+}catch(err){message(err.message||"Could not save room.",true);}finally{button.disabled=false;}});
+sessionCheck();
+
+async function loadBookings(){
+ const host=$("#bookingList");if(!host)return;
+ const {data,error}=await supabase.from("bookings").select("*").order("created_at",{ascending:false}).limit(100);
+ if(error){host.innerHTML=`<p class="message error">${safeText(error.message)}</p>`;return;}
+ if(!data.length){host.innerHTML="<p>No paid reservations yet.</p>";return;}
+ host.innerHTML=data.map(b=>`<article class="room-row"><div><h3>${safeText(b.customer_name)} · ${safeText(b.room_name)}</h3><p>${safeText(b.customer_email)} · ${safeText(b.arrival)} → ${safeText(b.departure)} · ${b.guests} guest(s) · ${b.nights} night(s)</p><p><strong>GH₵${Number(b.amount_ghs).toFixed(2)}</strong> · ${safeText(b.status)} · Ref: ${safeText(b.payment_reference)}</p>${b.special_requests?`<p>Request: ${safeText(b.special_requests)}</p>`:""}</div><div class="room-actions">${b.status!=="confirmed"?`<button data-booking-status="${b.id}" data-next-status="confirmed">Confirm</button>`:""}${b.status!=="cancelled"?`<button class="danger" data-booking-status="${b.id}" data-next-status="cancelled">Cancel</button>`:""}</div></article>`).join("");
+}
+$("#refreshBookings")?.addEventListener("click",loadBookings);
+$("#bookingList")?.addEventListener("click",async e=>{
+ const id=e.target.dataset.bookingStatus,next=e.target.dataset.nextStatus;if(!id||!next)return;
+ if(!confirm(`Change this reservation status to ${next}?`))return;
+ const {error}=await supabase.from("bookings").update({status:next,updated_at:new Date().toISOString()}).eq("id",id);
+ if(error){message(error.message,true);return;}message(`Reservation marked ${next}.`);loadBookings();
+});
